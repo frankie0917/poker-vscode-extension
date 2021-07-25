@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import * as Hand from 'pokersolver'
-
-console.log(Hand.Hand.solve(['Ad', '2d', '3d', '4d', 'Qc', 'Ks', '7h']))
+import 'firebase/database'
+import { observer } from 'mobx-react'
+import { useStore } from './store'
+import { Bottombar } from './components/Bottombar/Bottombar'
 
 function App() {
-  return <div className="App">234</div>
+  return (
+    <div className="App">
+      <Bottombar />
+    </div>
+  )
 }
 
-export default App
+export default observer(App)

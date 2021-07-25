@@ -43,9 +43,14 @@
         "title": "Hello World"
       },
       {
-        "command": "vstodo.refresh",
+        "command": "vs-poker.refresh",
         "category": "VSPoker",
         "title": "Refresh"
+      },
+      {
+        "command": "vs-poker.getGitHubUser",
+        "category": "VSPoker",
+        "title": "Get GitHub User"
       }
     ]
   },
@@ -85,6 +90,10 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
+    "@octokit/rest": "^18.7.1",
+    "firebase": "^8.8.0",
+    "mobx": "^6.3.2",
+    "mobx-react": "^7.2.0",
     "pokersolver": "^2.1.4",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
