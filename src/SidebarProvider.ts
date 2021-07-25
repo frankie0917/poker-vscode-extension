@@ -74,7 +74,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 				<link href="${styleVSCodeUri}" rel="stylesheet">
 			</head>
       <body>
-				
+				<div id="root"></div>
         <script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 			</html>`;
