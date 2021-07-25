@@ -11,14 +11,25 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  let disposable = vscode.commands.registerCommand(
-    'vs-poker.helloWorld',
-    () => {
-      vscode.window.showInformationMessage('Hello World from vs-poker!');
-    },
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vstodo.refresh', async () => {
+      await vscode.commands.executeCommand('workbench.action.closeSidebar');
+      await vscode.commands.executeCommand(
+        'workbench.view.extension.vs-poker-sidebar-view',
+      );
+      setTimeout(() => {
+        vscode.commands.executeCommand(
+          'workbench.action.webview.openDeveloperTools',
+        );
+      }, 500);
+    }),
   );
 
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vs-poker.helloWorld', () => {
+      vscode.window.showInformationMessage('Hello World from vs-poker!');
+    }),
+  );
 }
 
 export function deactivate() {}

@@ -11,6 +11,7 @@
   ],
   "activationEvents": [
     "onCommand:vs-poker.helloWorld",
+    "onCommand:vstodo.refresh",
     "onView:vs-poker-sidebar"
   ],
   "main": "./dist/extension.js",
@@ -38,7 +39,13 @@
     "commands": [
       {
         "command": "vs-poker.helloWorld",
+        "category": "VSPoker",
         "title": "Hello World"
+      },
+      {
+        "command": "vstodo.refresh",
+        "category": "VSPoker",
+        "title": "Refresh"
       }
     ]
   },

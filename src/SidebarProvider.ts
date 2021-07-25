@@ -50,9 +50,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css'),
     );
 
-    // const scriptUri = webview.asWebviewUri(
-    //   vscode.Uri.joinPath(this._extensionUri, 'out', 'compiled/sidebar.js'),
-    // );
+    const scriptUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, 'out', 'index.js'),
+    );
     // const styleMainUri = webview.asWebviewUri(
     //   vscode.Uri.joinPath(this._extensionUri, 'out', 'compiled/sidebar.css'),
     // );
@@ -74,13 +74,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 				<link href="${styleVSCodeUri}" rel="stylesheet">
 			</head>
       <body>
-				123
+				
+        <script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 			</html>`;
   }
 }
-
-// <script nonce="${nonce}" src="${scriptUri}"></script>
 
 function getNonce() {
   let text = '';
