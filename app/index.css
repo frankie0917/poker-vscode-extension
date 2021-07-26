@@ -9,3 +9,8 @@ body,
 body {
   overflow: hidden;
 }
+
+.link {
+  color: #3794ff;
+  cursor: pointer;
+}

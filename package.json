@@ -10,9 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vs-poker.helloWorld",
-    "onCommand:vstodo.refresh",
-    "onView:vs-poker-sidebar"
+    "onCommand:vs-poker.refresh"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -38,19 +36,9 @@
     },
     "commands": [
       {
-        "command": "vs-poker.helloWorld",
-        "category": "VSPoker",
-        "title": "Hello World"
-      },
-      {
         "command": "vs-poker.refresh",
         "category": "VSPoker",
         "title": "Refresh"
-      },
-      {
-        "command": "vs-poker.getGitHubUser",
-        "category": "VSPoker",
-        "title": "Get GitHub User"
       }
     ]
   },
