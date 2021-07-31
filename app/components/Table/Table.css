@@ -1,0 +1,8 @@
+.Table {
+  display: flex;
+  justify-content: center;
+}
+
+.table-svg {
+  width: 90%;
+}

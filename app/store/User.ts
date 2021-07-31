@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx'
+import { RootStore } from '.'
 
 export interface UserT {
   avavatarUrl: string
@@ -6,7 +7,7 @@ export interface UserT {
 }
 
 export class User {
-  constructor() {
+  constructor(private root: RootStore) {
     makeAutoObservable(this)
   }
   data: UserT | null = null
