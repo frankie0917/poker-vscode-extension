@@ -11,7 +11,7 @@ export const Bottombar = observer(() => {
       'message',
       (e: { data: { userInfo: { avatar_url: string; name: string } } }) => {
         user.setUser({
-          avavatarUrl: e.data.userInfo.avatar_url,
+          avatarUrl: e.data.userInfo.avatar_url,
           name: e.data.userInfo.name,
         })
       }
@@ -28,7 +28,7 @@ export const Bottombar = observer(() => {
 
   return (
     <div className="Bottombar">
-      <img className="avatar" src={user.data.avavatarUrl} alt="user" />
+      <img className="avatar" src={user.data.avatarUrl} alt="user" />
       <div>{user.data.name}</div>
     </div>
   )

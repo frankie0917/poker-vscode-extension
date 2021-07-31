@@ -1,10 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from '.'
-
-export interface UserT {
-  avavatarUrl: string
-  name: string
-}
+import { User as UserT } from '../../shared/User'
 
 export class User {
   constructor(private root: RootStore) {
@@ -12,11 +8,19 @@ export class User {
   }
   data: UserT | null = null
 
-  setUser(data: UserT) {
+  setUser = (data: UserT) => {
     this.data = data
   }
 
-  login() {
-    window.vscode.postMessage({ type: 'login' })
+  login = () => {
+    if (window.vscode) {
+      window.vscode.postMessage({ type: 'login' })
+      return
+    }
+
+    this.setUser({
+      name: 'fakeUser',
+      avatarUrl: 'https://dummyimage.com/400x400.png',
+    })
   }
 }
