@@ -19,7 +19,7 @@
         {
           "id": "vs-poker-sidebar-view",
           "title": "VSPoker",
-          "icon": "media/spade.svg"
+          "icon": "app/media/spade.svg"
         }
       ]
     },
@@ -29,7 +29,7 @@
           "type": "webview",
           "id": "vs-poker-sidebar",
           "name": "VSPoker",
-          "icon": "media/spade.svg",
+          "icon": "app/media/spade.svg",
           "contextualTitle": "VSPoker"
         }
       ]
@@ -43,8 +43,8 @@
     ]
   },
   "scripts": {
-    "build:vite": "vite build ",
-    "dev": "vite",
+    "start": "webpack serve --config ./react-webpack.config.js",
+    "build": "webpack --config ./react-webpack.config.js",
     "dev:server": "ts-node-dev ./server/index.ts",
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
@@ -75,14 +75,25 @@
     "glob": "^7.1.7",
     "mocha": "^8.4.0",
     "prettier": "^2.3.2",
-    "ts-loader": "^9.2.2",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.2",
     "vite": "^2.4.1",
     "vite-plugin-react-svg": "^0.2.0",
     "vscode-test": "^1.5.2",
-    "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.0"
+    "@babel/core": "^7.13.1",
+    "@babel/preset-env": "^7.13.5",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-typescript": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.2.0",
+    "path": "^0.12.7",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^9.2.4",
+    "webpack": "^5.24.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
     "@octokit/rest": "^18.7.1",
