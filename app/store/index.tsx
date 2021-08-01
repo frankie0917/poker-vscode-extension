@@ -5,6 +5,7 @@ import { PropsWithChildren } from 'react'
 import { User } from './User'
 import io from 'socket.io-client'
 import { Rooms } from './Rooms'
+import { Toasts } from './Toasts'
 import {
   CLIENT_EVT,
   ClientEvtDataMap,
@@ -16,11 +17,13 @@ import { version } from 'uuid'
 export class RootStore {
   user: User
   rooms: Rooms
+  toasts: Toasts
   socket: SocketIOClient.Socket
   constructor() {
     makeAutoObservable(this)
     this.user = new User(this)
     this.rooms = new Rooms(this)
+    this.toasts = new Toasts(this)
     this.socket = io('http://localhost:5000')
   }
 

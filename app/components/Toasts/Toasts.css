@@ -1,0 +1,17 @@
+.Toasts {
+  left: 0px;
+  right: 0px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast {
+  padding: 5px;
+  background: #444;
+  color: #fff;
+  border: #fff 1px solid;
+  border-radius: 2px;
+}

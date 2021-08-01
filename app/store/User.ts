@@ -18,8 +18,17 @@ export class User {
       return
     }
 
+    let name = ''
+    const promtName = () => {
+      name = window.prompt('name') ?? ''
+      if (!name) {
+        promtName()
+      }
+    }
+    promtName()
+
     this.setUser({
-      name: 'fakeUser',
+      name,
       avatarUrl: 'https://dummyimage.com/400x400.png',
     })
   }

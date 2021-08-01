@@ -10,10 +10,12 @@ export const Bottombar = observer(() => {
     window.addEventListener(
       'message',
       (e: { data: { userInfo: { avatar_url: string; name: string } } }) => {
-        user.setUser({
-          avatarUrl: e.data.userInfo.avatar_url,
-          name: e.data.userInfo.name,
-        })
+        if (e.data.userInfo) {
+          user.setUser({
+            avatarUrl: e.data.userInfo.avatar_url,
+            name: e.data.userInfo.name,
+          })
+        }
       }
     )
     user.login()
