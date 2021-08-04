@@ -6,6 +6,7 @@ import { User } from './User'
 import io, { Socket } from 'socket.io-client'
 import { Rooms } from './Rooms'
 import { Toasts } from './Toasts'
+import { Chat } from './Chat'
 import {
   CLIENT_EVT,
   ClientEvtDataMap,
@@ -18,12 +19,14 @@ export class RootStore {
   user: User
   rooms: Rooms
   toasts: Toasts
+  chat: Chat
   socket: Socket<DefaultEventsMap, DefaultEventsMap>
   constructor() {
     makeAutoObservable(this)
     this.user = new User(this)
     this.rooms = new Rooms(this)
     this.toasts = new Toasts(this)
+    this.chat = new Chat(this)
     this.socket = io('http://localhost:5000')
   }
 

@@ -1,0 +1,50 @@
+.Chat {
+  height: 280px;
+  max-height: 280px;
+  width: 100%;
+  border-top: 1px solid var(--vscode-input-foreground);
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-msg-wrap {
+  flex: 1;
+}
+
+.chat-msg {
+  display: flex;
+  margin: 5px;
+}
+
+.chat-msg-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  overflow: hidden;
+  object-fit: cover;
+  margin-bottom: 5px;
+}
+
+.chat-msg-content-wrap {
+  margin: 0 10px;
+}
+.chat-msg-name {
+  font-size: 0.8em;
+  margin-bottom: 2px;
+}
+
+.chat-msg-content {
+  border-radius: 2px;
+  padding: 4px 10px;
+  color: var(--vscode-input-background);
+  background: var(--vscode-input-foreground);
+}
+
+.chat-input {
+  display: flex;
+}
+
+.chat-input button {
+  max-width: 80px;
+}

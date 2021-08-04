@@ -39,8 +39,8 @@ io.on('connection', (socket) => {
     io.in(roomId).emit(type, data)
   }
 
-  on(CLIENT_EVT.userMessage, ({ message, user, roomId }) => {
-    emitToRoom(roomId, SERVER_EVT.userMessage, { user, message })
+  on(CLIENT_EVT.userMessage, ({ message, user, roomId, time }) => {
+    emitToRoom(roomId, SERVER_EVT.userMessage, { user, message, time })
   })
 
   on(CLIENT_EVT.hostRoom, async (data) => {

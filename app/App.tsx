@@ -5,6 +5,7 @@ import { Bottombar } from './components/Bottombar/Bottombar'
 import { Table } from './components/Table/Table'
 import { Rooms } from './components/Rooms/Rooms'
 import { Toasts } from './components/Toasts/Toasts'
+import { Chat } from './components/Chat/Chat'
 
 function App() {
   const store = useStore()
@@ -12,7 +13,14 @@ function App() {
   return (
     <div className="App">
       <Toasts />
-      {store.rooms.room === null ? <Rooms /> : <Table />}
+      {store.rooms.room === null ? (
+        <Rooms />
+      ) : (
+        <div className="main">
+          <Table />
+          <Chat />
+        </div>
+      )}
       <Bottombar />
     </div>
   )

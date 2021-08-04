@@ -14,19 +14,6 @@ export class Rooms {
   loading = false
   leaving = false
 
-  sendMessage = (message: string) => {
-    if (!this.root.user.data || !this.room) return
-    this.root.on(SERVER_EVT.userMessage, (data) => {
-      console.log('data', data)
-    })
-
-    this.root.emit(CLIENT_EVT.userMessage, {
-      user: this.root.user.data,
-      roomId: this.room.id,
-      message,
-    })
-  }
-
   onUserLeft = () => {
     this.root.on(SERVER_EVT.userLeft, ({ room, userName }) => {
       this.room = room

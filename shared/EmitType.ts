@@ -1,5 +1,6 @@
 import { User } from './User'
 import { Room } from './Room'
+import { ChatMessage } from './ChatMessage'
 export enum CLIENT_EVT {
   hostRoom = 'hostRoom',
   joinRoom = 'joinRoom',
@@ -13,11 +14,7 @@ export type ClientEvtDataMap = {
   }
   [CLIENT_EVT.joinRoom]: { id: string; user: User }
   [CLIENT_EVT.leaveRoom]: { roomId: string; userName: string }
-  [CLIENT_EVT.userMessage]: {
-    roomId: string
-    user: User
-    message: string
-  }
+  [CLIENT_EVT.userMessage]: ChatMessage
 }
 
 export enum SERVER_EVT {
@@ -50,5 +47,6 @@ export type ServerEvtDataMap = {
   [SERVER_EVT.userMessage]: {
     user: User
     message: string
+    time: Date
   }
 }
