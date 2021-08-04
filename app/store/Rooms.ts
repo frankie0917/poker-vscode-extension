@@ -1,24 +1,38 @@
 import { makeAutoObservable } from 'mobx'
 import { RootStore } from '.'
 import { CLIENT_EVT, SERVER_EVT } from '../../shared/EmitType'
-import { Room } from '../../shared/Room'
-import { ToastType } from './Toasts'
+import { ClientPlayer } from '../../shared/Game'
+import { ClientRoom } from '../../shared/Room'
 
 export class Rooms {
   constructor(private root: RootStore) {
     makeAutoObservable(this)
   }
 
-  room: Room | null = null
+  room: ClientRoom | null = null
+  player: ClientPlayer | null = null
   error: string | null = null
   loading = false
   leaving = false
 
+  onUserJoin = () => {
+    this.root.on(SERVER_EVT.userJoin, ({ room, userName }) => {
+      this.room = room
+      this.root.toasts.showToast(userName + ' joined')
+    })
+  }
+
   onUserLeft = () => {
     this.root.on(SERVER_EVT.userLeft, ({ room, userName }) => {
       this.room = room
-      this.root.toasts.showToast(ToastType.userLeft, `${userName} left`)
+      this.root.toasts.showToast(`${userName} left`)
     })
+  }
+
+  listenRoomEvents = () => {
+    this.onUserJoin()
+    this.onUserLeft()
+    this.onPreflop()
   }
 
   hostRoom = () => {
@@ -31,7 +45,7 @@ export class Rooms {
     this.root.on(SERVER_EVT.hostRoomRes, ({ room }) => {
       this.room = room
     })
-    this.onUserLeft()
+    this.listenRoomEvents()
   }
 
   joinRoom = (id: string) => {
@@ -49,10 +63,10 @@ export class Rooms {
     })
 
     this.root.on(SERVER_EVT.roomClosed, () => {
-      this.root.toasts.showToast(ToastType.roomClosed, 'Room closed')
+      this.root.toasts.showToast('Room closed')
       this.room = null
     })
-    this.onUserLeft()
+    this.listenRoomEvents()
   }
 
   leaveRoom = () => {
@@ -61,13 +75,31 @@ export class Rooms {
     this.leaving = true
 
     this.root.emit(CLIENT_EVT.leaveRoom, {
-      roomId: this.room.id,
       userName: this.root.user.data!.name,
     })
 
     this.root.on(SERVER_EVT.leaveRoomRes, () => {
       this.room = null
       this.leaving = false
+    })
+  }
+
+  receiveGameUpdate = () => {}
+
+  startGame = (data: {
+    blinds: {
+      small: number
+      big: number
+    }
+    money: number
+  }) => {
+    this.root.emit(CLIENT_EVT.startGame, data)
+  }
+
+  onPreflop = () => {
+    this.root.on(SERVER_EVT.preflop, ({ player, room }) => {
+      this.room = room
+      this.player = player
     })
   }
 }

@@ -1,0 +1,14 @@
+.start-game-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--vscode-editor-background);
+  border: 1px solid var(--vscode-input-foreground);
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.start-game-modal > div {
+  margin-bottom: 10px;
+}

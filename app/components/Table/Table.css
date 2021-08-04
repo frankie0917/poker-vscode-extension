@@ -5,5 +5,85 @@
 }
 
 .table-svg {
+  position: relative;
   width: 240px;
+}
+
+.col {
+  position: absolute;
+  top: 30px;
+  /* border: 1px solid #fff; */
+  height: 430px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.left-col {
+  left: -10px;
+}
+.mid-col {
+  top: -15px;
+  height: calc(100% + 30px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.right-col {
+  right: -10px;
+}
+
+.player-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.player-name {
+  width: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-name:hover::before {
+  content: attr(data-content);
+  position: absolute;
+  z-index: 15;
+  background: #fff;
+  color: #444;
+  font-size: 0.8em;
+  padding: 1px 4px;
+}
+
+.player {
+  opacity: 0.7;
+}
+
+.betting {
+  opacity: 1;
+}
+.betting img {
+  box-shadow: 0px 0px 0px 2px #edca29;
+}
+
+.player,
+.player-chip {
+  display: flex;
+  gap: 2px;
+}
+
+.player-info {
+  position: absolute;
+  align-items: center;
+  transform: translateX(35px);
+}
+
+.left-col .player-info {
+  left: 0px;
+  transform: translateX(-110%);
+}
+
+.player-chip svg {
+  width: 18px;
 }

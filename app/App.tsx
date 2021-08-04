@@ -6,6 +6,7 @@ import { Table } from './components/Table/Table'
 import { Rooms } from './components/Rooms/Rooms'
 import { Toasts } from './components/Toasts/Toasts'
 import { Chat } from './components/Chat/Chat'
+import { Controls } from './components/Controls/Controls'
 
 function App() {
   const store = useStore()
@@ -18,7 +19,10 @@ function App() {
       ) : (
         <div className="main">
           <Table />
-          <Chat />
+          <div>
+            <Controls />
+            <Chat />
+          </div>
         </div>
       )}
       <Bottombar />
