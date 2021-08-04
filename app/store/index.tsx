@@ -3,7 +3,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { PropsWithChildren } from 'react'
 import { User } from './User'
-import io from 'socket.io-client'
+import io, { Socket } from 'socket.io-client'
 import { Rooms } from './Rooms'
 import { Toasts } from './Toasts'
 import {
@@ -12,13 +12,13 @@ import {
   SERVER_EVT,
   ServerEvtDataMap,
 } from '../../shared/EmitType'
-import { version } from 'uuid'
+import { DefaultEventsMap } from 'socket.io-client/build/typed-events'
 
 export class RootStore {
   user: User
   rooms: Rooms
   toasts: Toasts
-  socket: SocketIOClient.Socket
+  socket: Socket<DefaultEventsMap, DefaultEventsMap>
   constructor() {
     makeAutoObservable(this)
     this.user = new User(this)
@@ -34,7 +34,7 @@ export class RootStore {
     type: T,
     callback: (data: ServerEvtDataMap[T]) => void
   ) => {
-    this.socket.on(type, callback)
+    this.socket.on(type, callback as any)
   }
 }
 

@@ -18,14 +18,9 @@ export class User {
       return
     }
 
-    let name = ''
-    const promtName = () => {
-      name = window.prompt('name') ?? ''
-      if (!name) {
-        promtName()
-      }
-    }
-    promtName()
+    const name = new URLSearchParams(window.location.search).get('n')
+
+    if (name === null) throw Error('Pass in n=fakeName in query params')
 
     this.setUser({
       name,

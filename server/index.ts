@@ -1,5 +1,5 @@
-import http = require('http')
-import socketIo = require('socket.io')
+import http from 'http'
+import { Server } from 'socket.io'
 import {
   CLIENT_EVT,
   SERVER_EVT,
@@ -13,13 +13,18 @@ const server = http.createServer()
 
 let rooms: Record<string, Room> = {}
 
-const io = socketIo(server)
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+})
+
 io.on('connection', (socket) => {
   const on = <T extends CLIENT_EVT>(
     type: T,
     callback: (data: ClientEvtDataMap[T]) => void
   ) => {
-    socket.on(type, callback)
+    socket.on(type, callback as any)
   }
 
   const emit = <T extends SERVER_EVT>(type: T, data: ServerEvtDataMap[T]) => {
@@ -31,18 +36,22 @@ io.on('connection', (socket) => {
     type: T,
     data: ServerEvtDataMap[T]
   ) => {
-    io.to(roomId).emit(type, data)
+    io.in(roomId).emit(type, data)
   }
 
-  on(CLIENT_EVT.hostRoom, (data) => {
-    const id = makeRoomID()
+  on(CLIENT_EVT.userMessage, ({ message, user, roomId }) => {
+    emitToRoom(roomId, SERVER_EVT.userMessage, { user, message })
+  })
+
+  on(CLIENT_EVT.hostRoom, async (data) => {
+    const roomId = makeRoomID()
     const room = {
-      id,
+      id: roomId,
       host: data.user,
       players: [data.user],
     }
-    rooms[id] = room
-    socket.join(id)
+    rooms[roomId] = room
+    socket.join(roomId)
     emit(SERVER_EVT.hostRoomRes, { room })
   })
 
@@ -61,29 +70,28 @@ io.on('connection', (socket) => {
     const index = rooms[roomId].players.findIndex(
       ({ name }) => name === userName
     )
-    if (index > -1) {
-      socket.leave(roomId)
+    if (index < 0) return
+    socket.leave(roomId)
+    if (rooms[roomId].host.name === userName) {
+      delete rooms[roomId]
 
-      if (rooms[roomId].host.name === userName) {
-        delete rooms[roomId]
+      emit(SERVER_EVT.leaveRoomRes, { result: 'room closed' })
+      emitToRoom(roomId, SERVER_EVT.roomClosed, { result: 'room closed' })
+    } else {
+      rooms[roomId].players = rooms[roomId].players.filter(
+        (_, i) => i !== index
+      )
+      emit(SERVER_EVT.leaveRoomRes, { result: 'leaved room' })
 
-        emit(SERVER_EVT.leaveRoomRes, { result: 'room closed' })
-        emitToRoom(roomId, SERVER_EVT.roomClosed, { result: 'room closed' })
-      } else {
-        rooms[roomId].players = rooms[roomId].players.filter(
-          (_, i) => i !== index
-        )
-        emit(SERVER_EVT.leaveRoomRes, { result: 'leaved room' })
-
-        emitToRoom(roomId, SERVER_EVT.userLeft, {
-          room: rooms[roomId],
-          userName,
-        })
-      }
+      emitToRoom(roomId, SERVER_EVT.userLeft, {
+        room: rooms[roomId],
+        userName,
+      })
     }
   })
 })
 
-server.listen(5000, () => {
-  console.log('server listening on port: 5000')
+const PORT = 5000
+server.listen(PORT, () => {
+  console.log(`server listening on port: ${PORT}`)
 })

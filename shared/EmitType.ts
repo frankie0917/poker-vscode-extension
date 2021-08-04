@@ -4,6 +4,7 @@ export enum CLIENT_EVT {
   hostRoom = 'hostRoom',
   joinRoom = 'joinRoom',
   leaveRoom = 'leaveRoom',
+  userMessage = 'userMessage',
 }
 
 export type ClientEvtDataMap = {
@@ -12,6 +13,11 @@ export type ClientEvtDataMap = {
   }
   [CLIENT_EVT.joinRoom]: { id: string; user: User }
   [CLIENT_EVT.leaveRoom]: { roomId: string; userName: string }
+  [CLIENT_EVT.userMessage]: {
+    roomId: string
+    user: User
+    message: string
+  }
 }
 
 export enum SERVER_EVT {
@@ -20,6 +26,7 @@ export enum SERVER_EVT {
   leaveRoomRes = 'leaveRoomRes',
   roomClosed = 'roomClosed',
   userLeft = 'userLeft',
+  userMessage = 'userMessage',
 }
 
 export type ServerEvtDataMap = {
@@ -39,5 +46,9 @@ export type ServerEvtDataMap = {
   [SERVER_EVT.userLeft]: {
     room: Room
     userName: string
+  }
+  [SERVER_EVT.userMessage]: {
+    user: User
+    message: string
   }
 }

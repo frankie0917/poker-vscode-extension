@@ -14,6 +14,26 @@ export class Rooms {
   loading = false
   leaving = false
 
+  sendMessage = (message: string) => {
+    if (!this.root.user.data || !this.room) return
+    this.root.on(SERVER_EVT.userMessage, (data) => {
+      console.log('data', data)
+    })
+
+    this.root.emit(CLIENT_EVT.userMessage, {
+      user: this.root.user.data,
+      roomId: this.room.id,
+      message,
+    })
+  }
+
+  onUserLeft = () => {
+    this.root.on(SERVER_EVT.userLeft, ({ room, userName }) => {
+      this.room = room
+      this.root.toasts.showToast(ToastType.userLeft, `${userName} left`)
+    })
+  }
+
   hostRoom = () => {
     if (!this.root.user.data) return
 
@@ -24,7 +44,9 @@ export class Rooms {
     this.root.on(SERVER_EVT.hostRoomRes, ({ room }) => {
       this.room = room
     })
+    this.onUserLeft()
   }
+
   joinRoom = (id: string) => {
     this.loading = true
     this.error = null
@@ -43,14 +65,9 @@ export class Rooms {
       this.root.toasts.showToast(ToastType.roomClosed, 'Room closed')
       this.room = null
     })
-
-    this.root.on(SERVER_EVT.userLeft, ({ room, userName }) => {
-      console.log('userName', userName)
-      this.room = room
-
-      this.root.toasts.showToast(ToastType.userLeft, `${userName} left`)
-    })
+    this.onUserLeft()
   }
+
   leaveRoom = () => {
     if (this.room === null) return
 
@@ -61,7 +78,7 @@ export class Rooms {
       userName: this.root.user.data!.name,
     })
 
-    this.root.on(SERVER_EVT.leaveRoomRes, ({ result }) => {
+    this.root.on(SERVER_EVT.leaveRoomRes, () => {
       this.room = null
       this.leaving = false
     })
