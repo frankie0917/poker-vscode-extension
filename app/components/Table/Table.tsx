@@ -7,9 +7,10 @@ import './Table.css'
 import { observer } from 'mobx-react'
 import { useStore } from '../../store'
 import { Topbar } from './Topbar/Topbar'
+import { Card } from '../Card/Card'
 
 export const Table = observer(() => {
-  const { rooms, user } = useStore()
+  const { rooms, user: self } = useStore()
 
   useEffect(() => {
     rooms.receiveGameUpdate()
@@ -32,7 +33,7 @@ export const Table = observer(() => {
       avatarUrl = user.avatarUrl
       name = user.name
     }
-
+    const isSelf = player?.data.name === self.data?.name
     return (
       <div className={`player ${status ? status : ''}`}>
         <div>
@@ -51,6 +52,12 @@ export const Table = observer(() => {
             )}
           </div>
         )}
+        {rooms.player?.hand.map((card, i) => (
+          <Card
+            card={isSelf ? card : undefined}
+            style={{ top: '100%', left: `${i * 25}px` }}
+          />
+        ))}
       </div>
     )
   }
@@ -61,6 +68,9 @@ export const Table = observer(() => {
       <div className="Table">
         <div className="table-svg">
           <TableSvg />
+          <div className="table-pool">
+            <ChipSvg /> <div>{rooms.room?.game.pool ?? 0}</div>
+          </div>
           <div className="left-col col">
             {renderPlayer(7)}
             {renderPlayer(6)}

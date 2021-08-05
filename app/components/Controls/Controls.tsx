@@ -10,7 +10,7 @@ export const Controls = observer(() => {
   const [bigBlind, setBigBlind] = useState(20)
   const [money, setMoney] = useState(1500)
 
-  const room = rooms.room
+  const { room, player } = rooms
   if (!room || !user.data) return null
 
   const closeModal = () => {
@@ -22,6 +22,7 @@ export const Controls = observer(() => {
 
   const { host, game, players } = room
   const isHost = host.name === user.data.name
+
   return (
     <div>
       <div className="controls">
