@@ -159,8 +159,8 @@ io.on('connection', (socket) => {
       running: true,
       position: {
         dealer: dealerIndex,
-        smallBlind: (dealerIndex + 1) % room.players.length,
-        bigBlind: isSolo ? -1 : (dealerIndex + 2) % room.players.length,
+        smallBlind: isSolo ? -1 : (dealerIndex + 1) % room.players.length,
+        bigBlind: (dealerIndex + (isSolo ? 1 : 2)) % room.players.length,
       },
     }
 
@@ -172,21 +172,28 @@ io.on('connection', (socket) => {
       hand: res.deck.draw(2),
       status: 'waiting',
       role: 'normal',
+      bet: 0,
       money,
     }))
 
     res.players[res.position.dealer].role = 'Dealer'
-    res.players[res.position.smallBlind].role = 'Small blind'
-    res.players[res.position.smallBlind].money -= res.blinds.small
-
     if (!isSolo) {
-      res.players[res.position.bigBlind].role = 'Big blind'
-      res.players[res.position.bigBlind].money -= res.blinds.big
+      res.players[res.position.smallBlind].role = 'Small blind'
+      res.players[res.position.smallBlind].money -= res.blinds.small
+      res.players[res.position.smallBlind].bet += res.blinds.small
     }
 
-    res.pool = res.blinds.big + res.blinds.small
-    res.players[(res.position.bigBlind + 1) % res.players.length].status =
-      'betting'
+    res.players[res.position.bigBlind].role = 'Big blind'
+    res.players[res.position.bigBlind].money -= res.blinds.big
+    res.players[res.position.bigBlind].bet += res.blinds.big
+
+    res.bet = res.blinds.big
+
+    res.pool = res.blinds.big + (isSolo ? 0 : res.blinds.small)
+    res.players[
+      (isSolo ? res.position.dealer : res.position.bigBlind + 1) %
+        res.players.length
+    ].status = 'betting'
 
     rooms[socketData.roomId].game = res
 
@@ -206,6 +213,27 @@ io.on('connection', (socket) => {
         },
       })
     })
+  })
+
+  on(CLIENT_EVT.callBet, () => {
+    const socketData = socketMap[socket.id]
+    if (!socketData.roomId) {
+      emitError('Not in any room')
+      return
+    }
+    const room = rooms[socketData.roomId]
+
+    const playerIndex = room.players.findIndex(
+      ({ socketId }) => socket.id === socketId
+    )
+    if (playerIndex < 0) {
+      emitError('Player not found')
+      return
+    }
+    const res = room
+    res.game.players[playerIndex].bet = res.game.bet
+    res.game.players[playerIndex].money -= res.game.bet
+    res.game.pool += res.game.bet
   })
 })
 

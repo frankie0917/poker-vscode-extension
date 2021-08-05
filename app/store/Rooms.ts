@@ -69,6 +69,10 @@ export class Rooms {
     this.listenRoomEvents()
   }
 
+  callBet = () => {
+    this.root.emit(CLIENT_EVT.callBet, {})
+  }
+
   leaveRoom = () => {
     if (this.room === null) return
 

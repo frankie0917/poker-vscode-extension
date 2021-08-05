@@ -8,6 +8,7 @@ export enum CLIENT_EVT {
   leaveRoom = 'leaveRoom',
   userMessage = 'userMessage',
   startGame = 'startGame',
+  callBet = 'callBet',
 }
 
 export type ClientEvtDataMap = {
@@ -24,6 +25,7 @@ export type ClientEvtDataMap = {
     }
     money: number
   }
+  [CLIENT_EVT.callBet]: {}
 }
 
 export enum SERVER_EVT {

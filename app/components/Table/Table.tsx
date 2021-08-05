@@ -17,7 +17,7 @@ export const Table = observer(() => {
   }, [])
 
   const renderPlayer = (index: number) => {
-    let status, avatarUrl, name, money, role
+    let status, avatarUrl, name, money, role, bet
 
     const player = rooms.room?.game.players[index]
     const user = rooms.room?.players[index]
@@ -29,6 +29,7 @@ export const Table = observer(() => {
       name = player.data.name
       money = player.money
       role = player.role
+      bet = player.bet
     } else {
       avatarUrl = user.avatarUrl
       name = user.name
@@ -43,21 +44,32 @@ export const Table = observer(() => {
           </div>
         </div>
         {status && (
-          <div className="player-info">
-            <div className="player-chip">
-              <ChipSvg /> <div>{money}</div>
+          <>
+            <div className="player-info">
+              <div className="player-chip">
+                <ChipSvg /> <div>{money}</div>
+              </div>
+              {role !== 'normal' && (
+                <div style={{ whiteSpace: 'nowrap' }}>{role}</div>
+              )}
             </div>
-            {role !== 'normal' && (
-              <div style={{ whiteSpace: 'nowrap' }}>{role}</div>
+            {player?.active && (
+              <div className="player-bet">
+                bet: <div>{bet}</div>
+              </div>
             )}
-          </div>
+          </>
         )}
-        {rooms.player?.hand.map((card, i) => (
-          <Card
-            card={isSelf ? card : undefined}
-            style={{ top: '100%', left: `${i * 25}px` }}
-          />
-        ))}
+        {player?.active && (
+          <>
+            {rooms.player?.hand.map((card, i) => (
+              <Card
+                card={isSelf ? card : undefined}
+                style={{ top: '100%', left: `${i * 25}px` }}
+              />
+            ))}
+          </>
+        )}
       </div>
     )
   }

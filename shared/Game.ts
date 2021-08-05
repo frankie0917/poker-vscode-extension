@@ -8,6 +8,7 @@ export type Player = {
   money: number
   hand: StandardPlayingCard[]
   role: 'Dealer' | 'Small blind' | 'Big blind' | 'normal'
+  bet: number
 }
 
 export type ClientPlayer = Omit<Player, 'data'> & {
@@ -30,6 +31,7 @@ export type Game = {
     smallBlind: number
     bigBlind: number
   }
+  bet: number
 }
 
 export type ClientGame = Omit<Game, 'deck' | 'players'> & {
@@ -50,4 +52,5 @@ export const makeDefaultGame = (): Game => ({
     smallBlind: -1,
     bigBlind: -1,
   },
+  bet: 0,
 })

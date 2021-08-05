@@ -22,7 +22,11 @@ export const Controls = observer(() => {
 
   const { host, game, players } = room
   const isHost = host.name === user.data.name
+  const cantControl = player?.status !== 'betting'
 
+  const handleCall = () => {
+    rooms.callBet()
+  }
   return (
     <div>
       <div className="controls">
@@ -40,6 +44,20 @@ export const Controls = observer(() => {
           >
             Start game!
           </button>
+        )}
+        {game.running && player && (
+          <>
+            <div>
+              <button disabled={cantControl || game.bet !== player.bet}>
+                Check
+              </button>
+              <button disabled={cantControl}>Fold</button>
+            </div>
+            <button disabled={cantControl} onClick={handleCall}>
+              {game.bet >= player.money ? 'All in' : 'Call'}
+            </button>
+            <button disabled={cantControl}>Raise</button>
+          </>
         )}
       </div>
       {isOpen && (
